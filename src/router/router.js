@@ -1,19 +1,126 @@
 /* /src/router/index.js */
 import React from "react";
-import { createAppContainer, createBottomTabNavigator } from "react-navigation";
+import { createAppContainer, createBottomTabNavigator, createStackNavigator } from "react-navigation";
 import { tabBarOptions } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Icons from "react-native-vector-icons/Ionicons";
-import {
-  HomeScreen,
-  SearchScreen,
-  FavoritesScreen,
-  ProfileScreen
-} from "../screens";
-
 import Profile from "../screens/profile";
 import Saved from "../screens/saved";
-import HomePage from "../screens/home";
+import Home from "../screens/home";
+import Login from "../screens/login";
+import Settings from "../screens/settings";
+
+const HomePage = createStackNavigator({
+   Home: {
+       screen: Home,
+       navigationOptions: () => ({
+           header: null,
+        }),
+   },
+   Login: {
+       screen: Login,
+       navigationOptions: () => ({
+          headerTitleStyle: {
+           color: "#000"
+          },
+          headerStyle: {
+            backgroundColor: "#fff",
+            color: "#000"
+          },
+          headerTintColor: '#000',
+      }),
+   }
+ });
+
+const SavedPage = createStackNavigator({
+   Save: {
+       screen: Saved,
+       navigationOptions: () => ({
+           header: null,
+        }),
+   },
+   Login: {
+       screen: Login,
+       navigationOptions: () => ({
+          headerTitleStyle: {
+           color: "#000"
+          },
+          headerStyle: {
+            backgroundColor: "#fff",
+            color: "#000"
+          },
+          headerTintColor: '#000',
+      }),
+   }
+ });
+
+const ProfilePage = createStackNavigator({
+   Profile: {
+       screen: Profile,
+       navigationOptions: () => ({
+           header: null,
+        }),
+   },
+   Login: {
+       screen: Login,
+       navigationOptions: () => ({
+          headerTitleStyle: {
+           color: "#000"
+          },
+          headerStyle: {
+            backgroundColor: "#fff",
+            color: "#000"
+          },
+          headerTintColor: '#000',
+      }),
+   },
+   Settings: {
+       screen: Settings,
+       navigationOptions: () => ({
+          title: "Settings",
+          headerTitleStyle: {
+           color: "#000"
+          },
+          headerStyle: {
+            backgroundColor: "#fff",
+            color: "#000"
+          },
+          headerTintColor: '#000',
+      }),
+   }
+ });
+
+HomePage.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {};
+
+  if (routeName === 'Login') {
+    navigationOptions.tabBarVisible = false;
+  }
+
+  return navigationOptions;
+};
+
+SavedPage.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {};
+
+  if (routeName === 'Login') {
+    navigationOptions.tabBarVisible = false;
+  }
+
+  return navigationOptions;
+};
+
+ProfilePage.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {};
+
+  if (routeName === 'Login' || routeName === 'Settings') {
+    navigationOptions.tabBarVisible = false;
+  }
+
+  return navigationOptions;
+};
 
 const TabNavigator = createBottomTabNavigator({
     HomeScreen: {
@@ -23,15 +130,15 @@ const TabNavigator = createBottomTabNavigator({
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="home" color={tintColor} />
       }
     },
-    SearchScreen: {
-      screen: Saved,
+    SavedScreen: {
+      screen: SavedPage,
       navigationOptions: {
       	tabBarLabel: "Saved",
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="star" color={tintColor} />
       }
     },
     ProfileScreen: {
-      screen: Profile,
+      screen: ProfilePage,
       navigationOptions: {
       	tabBarLabel: "Me",
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />
@@ -41,7 +148,7 @@ const TabNavigator = createBottomTabNavigator({
 },
 {
   tabBarOptions: {
-      activeTintColor: '#ef473a',
+      activeTintColor: '#e0212d',
       inactiveTintColor: 'grey',
     }
 });
